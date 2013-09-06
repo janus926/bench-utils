@@ -1,5 +1,8 @@
 bench-utils
 ===========
+```
+var bench = require('bench-utils');
+```
 
 StopWatch
 -----------
@@ -27,7 +30,10 @@ new bench.Timestamp('rpc0', 'station3');
 
 report()
 -----------
->-- stopwatch --
-loop0 - cycles=10000, elpased=14.29784ms, avg=0.001429ms
--- timestamp --
+```
+bench.report()
+```
+>-- stopwatch --  
+loop0 - cycles=10000, elpased=14.29784ms, avg=0.001429ms  
+-- timestamp --  
 rpc0 - station1+0.034642ms > station2+31.690728ms > station3
