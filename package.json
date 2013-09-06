@@ -1,0 +1,24 @@
+{
+  "name": "bench-utils",
+  "version": "0.0.1",
+  "description": "Utilities for benchmarking.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/janus926/bench-utils.git"
+  },
+  "keywords": [
+    "benchmark"
+  ],
+  "author": {
+    "name": "Ting-Yu Chou",
+    "email": "janus926@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/janus926/bench-utils/issues"
+  }
+}
