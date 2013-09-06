@@ -32,24 +32,22 @@ function hrtimeCompare(a, b) {
 }
 
 function hrtimeAdd(a, b) {
-    a[0] += b[0];
-    a[1] += b[1];
-    if (a[1] > 1e9) {
-        a[0] += 1;
-        a[1] -= 1e9;
+    var result = [a[0] + b[0], a[1] + b[1]];
+    if (result[1] > 1e9) {
+        result[0] += 1;
+        result[1] -= 1e9;
     }
-    return a;
+    return result;
 }
 
 function hrtimeSub(a, b) {
     // Assume a >= b
-    a[0] -= b[0];
-    a[1] -= b[1];
-    if (a[1] < 0) {
-        a[0] -= 1;
-        a[1] += 1e9;
+    var result = [a[0] - b[0], a[1] - b[1]];
+    if (result[1] < 0) {
+        result[0] -= 1;
+        result[1] += 1e9;
     }
-    return a;
+    return result;
 }
 
 function hrtimeDiv(a, b) {
@@ -58,7 +56,7 @@ function hrtimeDiv(a, b) {
     return hrtimeStr(result);
 }
 
-var benchUtils = {
+var utils = {
 
     stopwatches: {},
     timestamps: {},
@@ -67,20 +65,21 @@ var benchUtils = {
         this.cycles = 0;
         this.elapsed = [0, 0];
         this.startTime = null;
-        benchUtils.stopwatches[id] = this;
+        utils.stopwatches[id] = this;
     },
 
     Timestamp: function (objId, where) {
-        if (!benchUtils.timestamps[objId])
-            benchUtils.timestamps[objId] = {};
-        benchUtils.timestamps[objId][where] = process.hrtime();
+        var now = process.hrtime();
+        if (!utils.timestamps[objId])
+            utils.timestamps[objId] = {};
+        utils.timestamps[objId][where] = now;
     },
 
     report: function () {
         console.log('-- stopwatch --');
         var sw;
-        for (var id in benchUtils.stopwatches) {
-            sw = benchUtils.stopwatches[id];
+        for (var id in utils.stopwatches) {
+            sw = utils.stopwatches[id];
             console.log(id,
                         '- cycles=' + sw.cycles +
                         ', elpased=' + hrtimeStr(sw.elapsed) +
@@ -88,10 +87,10 @@ var benchUtils = {
         }
 
         console.log('-- timestamp --');
-        for (var objId in benchUtils.timestamps) {
+        for (var objId in utils.timestamps) {
             var array = [];
-            for (var ts in benchUtils.timestamps[objId])
-                array.push([ts, benchUtils.timestamps[objId][ts]])
+            for (var ts in utils.timestamps[objId])
+                array.push([ts, utils.timestamps[objId][ts]])
             array.sort(hrtimeCompare);
             process.stdout.write(objId + ' - ' + array[0][0]);
             for (var i = 1; i < array.length; ++i)
@@ -102,18 +101,18 @@ var benchUtils = {
     }
 };
 
-benchUtils.Stopwatch.prototype.start = function () {
+utils.Stopwatch.prototype.start = function () {
     if (!this.startTime)
         this.startTime = process.hrtime();
 };
 
-benchUtils.Stopwatch.prototype.stop = function () {
+utils.Stopwatch.prototype.stop = function () {
     if (this.startTime) {
         var now = process.hrtime();
-        hrtimeAdd(this.elapsed, hrtimeSub(now, this.startTime));
+        this.elapsed = hrtimeAdd(this.elapsed, hrtimeSub(now, this.startTime));
         ++this.cycles;
         this.startTime = null;
     }
 };
 
-module.exports = benchUtils;
+module.exports = utils;

@@ -1,15 +1,17 @@
-var b = require('./bench-utils'),
-    util = require('util');
+var bench = require('./index');
 
-new b.Timestamp('rpc0', 'appSvrData');
-new b.Timestamp('rpc0', 'gwSvrData');
+new bench.Timestamp('rpc0', 'station1');
+new bench.Timestamp('rpc0', 'station2');
 
-var s = new b.Stopwatch('loop0');
-for (var i = 0; i < 3; ++i) {
-    s.start();
-    for (var j = 0; j < 1000; ++j)
-        process.stdout.write('.');
-    s.stop();
+var sw = new bench.Stopwatch('loop0');
+var dummy = 0;
+
+for (var i = 0; i < 10000; ++i) {
+    sw.start();
+    dummy += i * 2;
+    sw.stop();
 }
 
-b.report();
+new bench.Timestamp('rpc0', 'station3');
+
+bench.report();
