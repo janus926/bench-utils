@@ -21,10 +21,9 @@ Timestamp
 -----------
 ```
 new bench.Timestamp('rpc0', 'station1');
-new bench.Timestamp('rpc0', 'station2');
-
 ...
-
+new bench.Timestamp('rpc0', 'station2');
+...
 new bench.Timestamp('rpc0', 'station3');
 ```
 
