@@ -4,7 +4,7 @@ bench-utils
 var bench = require('bench-utils');
 ```
 
-StopWatch
+Stopwatch
 -----------
 ```
 var sw = new bench.Stopwatch('loop0');
