@@ -34,5 +34,5 @@ New a stopwatch with specific id.
 #### start()
 #### stop()
 ### bench.timestamp(objId, where)
-Function to add a timestamp from where on objId.
+Function to add a timestamp on objId from somewhere.
 ### bench.report()
