@@ -2,7 +2,7 @@
 
 ## Usage
 ```
-var bench = require('./index');
+var bench = require('bench-utils');
 
 bench.timestamp('rpc0', 'station1');
 bench.timestamp('rpc0', 'station2');
