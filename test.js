@@ -1,17 +1,25 @@
 var bench = require('./index');
 
-bench.timestamp('rpc0', 'station1');
-bench.timestamp('rpc0', 'station2');
+bench.timestamp('rpc1', 'station1');
+bench.timestamp('rpc1', 'station2');
 
-var sw = new bench.Stopwatch('loop0');
+var c1 = new bench.Counter('counter1');
+var sw1 = new bench.Stopwatch('stopwatch1');
+var sw2 = new bench.Stopwatch('stopwatch2');
 var dummy = 0;
 
-for (var i = 0; i < 10000; ++i) {
-    sw.start();
+c1.start();
+sw1.start();
+for (var i = 0; i < 1000; ++i) {
+    c1.incr();
+    sw2.start();
     dummy += i * 2;
-    sw.stop();
+    sw2.stop();
+    sw1.split();
 }
+c1.stop();
+sw1.stop();
 
-bench.timestamp('rpc0', 'station3');
+bench.timestamp('rpc1', 'station3');
 
 bench.report();
