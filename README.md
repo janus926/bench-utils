@@ -2,7 +2,7 @@
 
 ## Usage
 ```
-var bench = require('./index');
+var bench = require('./bench-utils');
 
 bench.timestamp('rpc1', 'station1');
 bench.timestamp('rpc1', 'station2');
@@ -33,7 +33,7 @@ which will get output:
 Counter:
   counter1 - value=1000, elapsed=3.211574ms, (311373.799888times/sec)
 Stopwatch:
-  stopwatch1 - cycles=1, total elapsed=3.225595ms (3.225595ms/cycle), splits=1000, splits elapsed=3.156403ms (0.003156ms/lap)
+  stopwatch1 - cycles=1, total elapsed=3.225595ms (3.225595ms/cycle), splits=1000, splits elapsed=3.156403ms (0.003156ms/split)
   stopwatch2 - cycles=1000, total elapsed=0.497903ms (0.000497ms/cycle)
 Timestamp:
   rpc1 - station1 +0.020851ms > station2 +3.349915ms > station3

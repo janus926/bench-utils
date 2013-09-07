@@ -50,7 +50,7 @@ var utils = {
                 var avg = hrtime.str(hrtime.div(sw.splitsElapsed, sw.splits));
                 process.stdout.write(', splits=' + sw.splits +
                                      ', splits elapsed=' + hrtime.str(sw.splitsElapsed) +
-                                     ' (' + avg + '/lap)');
+                                     ' (' + avg + '/split)');
             }
             process.stdout.write('\n');
         }
