@@ -31,7 +31,7 @@ bench.summary();
 which will get output:
 ```
 Counter:
-  counter1 - value=1000, elapsed=3.192441ms, (313239.931451times/sec)
+  counter1 - value=1000, elapsed=3.192441ms (313239.931451times/sec)
 Stopwatch:
   stopwatch1 - splits=1000, laps elapsed=3.135265ms (0.003135ms/lap)
   stopwatch2 - cycles=1000, total elapsed=0.478917ms (0.000478ms/cycle)
