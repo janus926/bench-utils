@@ -31,13 +31,12 @@ bench.summary();
 which will get output:
 ```
 Counter:
-  counter1 - value=1000, elapsed=3.157077ms, (316748.688740times/sec)
+  counter1 - value=1000, elapsed=3.192441ms, (313239.931451times/sec)
 Stopwatch:
-  stopwatch1 - splits=1000, laps elapsed=3.098828ms (0.003098ms/lap)
-  stopwatch2 - cycles=1000, total elapsed=0.480179ms (0.00048ms/cycle)
+  stopwatch1 - splits=1000, laps elapsed=3.135265ms (0.003135ms/lap)
+  stopwatch2 - cycles=1000, total elapsed=0.478917ms (0.000478ms/cycle)
 Timestamp:
-  rpc1 - station1 +0.015553ms > station2 +3.295119ms > station3
-
+  rpc1 - received +0.014971ms > processed +3.330493ms > replied
 ```
 
 ## API
