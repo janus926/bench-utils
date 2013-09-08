@@ -1,6 +1,6 @@
 {
   "name": "bench-utils",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Utilities for benchmarking, such as counter, stopwatch, and timestamp.",
   "main": "index.js",
   "scripts": {
