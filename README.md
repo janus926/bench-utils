@@ -4,8 +4,8 @@
 ```
 var bench = require('./bench-utils');
 
-bench.timestamp('rpc1', 'station1');
-bench.timestamp('rpc1', 'station2');
+bench.timestamp('rpc1', 'received');
+bench.timestamp('rpc1', 'processed');
 
 var c1 = new bench.Counter('counter1');
 var sw1 = new bench.Stopwatch('stopwatch1');
@@ -24,7 +24,7 @@ for (var i = 0; i < 1000; ++i) {
 c1.stop();
 sw1.stop();
 
-bench.timestamp('rpc1', 'station3');
+bench.timestamp('rpc1', 'replied');
 
 bench.summary();
 ```
