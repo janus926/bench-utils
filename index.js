@@ -94,7 +94,7 @@ utils.Counter.prototype.stop = function () {
 
 utils.Counter.prototype.toString = function () {
     return this.name + ' - value=' + this.value + ', elapsed=' +
-           hrtime.str(this.elapsed) + ', (' +
+           hrtime.str(this.elapsed) + ' (' +
            (this.value / (this.elapsed[0] + (this.elapsed[1] / 1e9))).toFixed(6) +
            'times/sec)';
 };
