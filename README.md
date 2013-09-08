@@ -26,7 +26,7 @@ sw1.stop();
 
 bench.timestamp('rpc1', 'station3');
 
-bench.report();
+bench.summary();
 ```
 which will get output:
 ```
@@ -43,15 +43,15 @@ Timestamp:
 ## API
 ### bench.Counter(name)
 New a counter with a name.
-#### decr()
-#### incr()
-#### start()
-#### stop()
+#### Counter.decr()
+#### Counter.incr()
+#### Counter.start()
+#### Counter.stop()
 ### bench.Stopwatch(name)
 New a stopwatch with a name.
-#### split()
-#### start()
-#### stop()
+#### Stopwatch.split()
+#### Stopwatch.start()
+#### Stopwatch.stop()
 ### bench.timestamp(thing, where)
 Function to add something a timestamp from somewhere.
-### bench.report()
+### bench.summary()
