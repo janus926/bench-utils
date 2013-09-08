@@ -1,7 +1,7 @@
 var hrtime = require('./lib/hrtime');
 
-var counter = {};
-var stopwatch = {};
+var counter = [];
+var stopwatch = [];
 var timestamp = {};
 
 var utils = {
@@ -11,7 +11,7 @@ var utils = {
         this.value = 0;
         this.elapsed = [0, 0];
         this.startTime = null;
-        counter[name] = this;
+        counter.push(this);
     },
 
     Stopwatch: function (name) {
@@ -22,7 +22,7 @@ var utils = {
         this.splits = 0;
         this.lastSplit = [0, 0];
         this.lapsElapsed = [0, 0];
-        stopwatch[name] = this;
+        stopwatch.push(this);
     },
 
     timestamp: function (thing, where) {
@@ -33,12 +33,12 @@ var utils = {
 
     summary: function () {
         console.log('Counter:');
-        for (var name in counter)
-            console.log('  ' + counter[name]);
+        for (var i = 0; i < counter.length; ++i)
+            console.log('  ' + counter[i]);
 
         console.log('Stopwatch:');
-        for (var name in stopwatch)
-            console.log('  ' + stopwatch[name]);
+        for (var i = 0; i < stopwatch.length; ++i)
+            console.log('  ' + stopwatch[i]);
 
         var compare = function (a, b) {
             var a0 = a[1][0];
