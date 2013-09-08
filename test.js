@@ -22,4 +22,4 @@ sw1.stop();
 
 bench.timestamp('rpc1', 'station3');
 
-bench.report();
+bench.summary();

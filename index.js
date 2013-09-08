@@ -7,6 +7,7 @@ var timestamp = {};
 var utils = {
 
     Counter: function (name) {
+        this.name = name;
         this.value = 0;
         this.elapsed = [0, 0];
         this.startTime = null;
@@ -14,12 +15,13 @@ var utils = {
     },
 
     Stopwatch: function (name) {
+        this.name = name;
         this.cycles = 0;
         this.startTime = null;
         this.totalElapsed = [0, 0];
         this.splits = 0;
         this.lastSplit = [0, 0];
-        this.splitsElapsed = [0, 0];
+        this.lapsElapsed = [0, 0];
         stopwatch[name] = this;
     },
 
@@ -29,38 +31,37 @@ var utils = {
         timestamp[thing][where] = process.hrtime();
     },
 
-    report: function () {
+    summary: function () {
         console.log('Counter:');
-        for (var name in counter) {
-            var ctr = counter[name];
-            var avg = (ctr.value / (ctr.elapsed[0] + (ctr.elapsed[1] / 1e9))).toFixed(6);
-            console.log('  ' + name + ' - value=' + ctr.value +
-                        ', elapsed=' + hrtime.str(ctr.elapsed) +
-                        ', (' + avg + 'times/sec)');
-        }
+        for (var name in counter)
+            console.log('  ' + counter[name]);
 
         console.log('Stopwatch:');
-        for (var name in stopwatch) {
-            var sw = stopwatch[name];
-            var avg = hrtime.str(hrtime.div(sw.totalElapsed, sw.cycles));
-            process.stdout.write('  ' + name + ' - cycles=' + sw.cycles +
-                                 ', total elapsed=' + hrtime.str(sw.totalElapsed) +
-                                 ' (' + avg + '/cycle)');
-            if (sw.splits) {
-                var avg = hrtime.str(hrtime.div(sw.splitsElapsed, sw.splits));
-                process.stdout.write(', splits=' + sw.splits +
-                                     ', splits elapsed=' + hrtime.str(sw.splitsElapsed) +
-                                     ' (' + avg + '/split)');
-            }
-            process.stdout.write('\n');
-        }
+        for (var name in stopwatch)
+            console.log('  ' + stopwatch[name]);
+
+        var compare = function (a, b) {
+            var a0 = a[1][0];
+            var b0 = b[1][0];
+            if (a0 < b0)
+                return -1;
+            if (a0 > b0)
+                return 1;
+            var a1 = a[1][1];
+            var b1 = b[1][1];
+            if (a1 < b1)
+                return -1;
+            if (a1 > b1)
+                return 1;
+            return 0;
+        };
 
         console.log('Timestamp:');
         for (var thing in timestamp) {
             var array = [];
             for (var where in timestamp[thing])
                 array.push([where, timestamp[thing][where]])
-            array.sort(hrtime.cmp);
+            array.sort(compare);
             process.stdout.write('  ' + thing + ' - ' + array[0][0]);
             for (var i = 1; i < array.length; ++i)
                 process.stdout.write(' +' + hrtime.str(hrtime.sub(array[i][1], array[i - 1][1])) +
@@ -91,11 +92,18 @@ utils.Counter.prototype.stop = function () {
     }
 };
 
+utils.Counter.prototype.toString = function () {
+    return this.name + ' - value=' + this.value + ', elapsed=' +
+           hrtime.str(this.elapsed) + ', (' +
+           (this.value / (this.elapsed[0] + (this.elapsed[1] / 1e9))).toFixed(6) +
+           'times/sec)';
+};
+
 utils.Stopwatch.prototype.split = function () {
     if (this.startTime) {
         ++this.splits;
         var now;
-        this.splitsElapsed = hrtime.add(this.splitsElapsed,
+        this.lapsElapsed = hrtime.add(this.lapsElapsed,
                                       hrtime.sub((now = process.hrtime()), this.lastSplit));
         this.lastSplit = now;
     }
@@ -113,6 +121,19 @@ utils.Stopwatch.prototype.stop = function () {
                                        hrtime.sub(process.hrtime(), this.startTime));
         this.startTime = null;
     }
+};
+
+utils.Stopwatch.prototype.toString = function () {
+    var ret = this.name + ' - ';
+    if (this.cycles > 1)
+        ret += 'cycles=' + this.cycles +
+               ', total elapsed=' + hrtime.str(this.totalElapsed) +
+               ' (' + hrtime.str(hrtime.div(this.totalElapsed, this.cycles)) + '/cycle)';
+    if (this.splits)
+        ret += (this.cycles > 1 ? ', splits=' : 'splits=') + this.splits +
+               ', laps elapsed=' + hrtime.str(this.lapsElapsed) +
+               ' (' + hrtime.str(hrtime.div(this.lapsElapsed, this.splits)) + '/lap)';
+    return ret;
 };
 
 module.exports = utils;
