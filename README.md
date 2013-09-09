@@ -4,53 +4,56 @@
 ```
 var bench = require('./bench-utils');
 
-bench.timestamp('rpc1', 'received');
-bench.timestamp('rpc1', 'processed');
+var rpc1 = new bench.Timestampable('rpc1');
 
-var c1 = new bench.Counter('counter1');
-var sw1 = new bench.Stopwatch('stopwatch1');
-var sw2 = new bench.Stopwatch('stopwatch2');
+rpc1.timestamp('received');
+rpc1.timestamp('processed');
+
+var loop1 = new bench.Counter('loop1');
+var for1 = new bench.Stopwatch('for1');
+var block1 = new bench.Stopwatch('block1');
 var dummy = 0;
 
-c1.start();
-sw1.start();
+loop1.start();
+for1.start();
 for (var i = 0; i < 1000; ++i) {
-    c1.incr();
-    sw2.start();
+    loop1.incr();
+    block1.start();
     dummy += i * 2;
-    sw2.stop();
-    sw1.split();
+    block1.stop();
+    for1.split();
 }
-c1.stop();
-sw1.stop();
+loop1.stop();
+for1.stop();
 
-bench.timestamp('rpc1', 'replied');
+rpc1.timestamp('replied');
 
 bench.summary();
 ```
 which will get output:
 ```
 Counter:
-  counter1 - value=1000, elapsed=3.192441ms (313239.931451times/sec)
+  loop1 - value=1000, elapsed=3.142625ms (318205.321984times/sec)
 Stopwatch:
-  stopwatch1 - splits=1000, laps elapsed=3.135265ms (0.003135ms/lap)
-  stopwatch2 - cycles=1000, total elapsed=0.478917ms (0.000478ms/cycle)
-Timestamp:
-  rpc1 - received +0.014971ms > processed +3.330493ms > replied
+  for1 - cycles=1, total elapsed=3.156229ms (3.156229ms/cycle), splits=1000, laps elapsed=3.082689ms (0.003082ms/lap)
+  block1 - cycles=1000, total elapsed=0.465914ms (0.000465ms/cycle)
+Timestampable:
+  rpc1 - received <0.015879ms> processed <3.283273ms> replied
 ```
 
 ## API
 ### bench.Counter(name)
-New a counter with a name.
 #### Counter.decr()
 #### Counter.incr()
 #### Counter.start()
 #### Counter.stop()
+#### Counter.toString()
 ### bench.Stopwatch(name)
-New a stopwatch with a name.
 #### Stopwatch.split()
 #### Stopwatch.start()
 #### Stopwatch.stop()
-### bench.timestamp(thing, where)
-Function to add something a timestamp from somewhere.
+#### Stopwatch.toString()
+### bench.Timestampable(name)
+#### Timestampable.timestamp(event)
+#### Timestampable.toString()
 ### bench.summary()

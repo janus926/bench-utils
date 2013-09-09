@@ -1,25 +1,27 @@
 var bench = require('./index');
 
-bench.timestamp('rpc1', 'received');
-bench.timestamp('rpc1', 'processed');
+var rpc1 = new bench.Timestampable('rpc1');
 
-var c1 = new bench.Counter('counter1');
-var sw1 = new bench.Stopwatch('stopwatch1');
-var sw2 = new bench.Stopwatch('stopwatch2');
+rpc1.timestamp('received');
+rpc1.timestamp('processed');
+
+var loop1 = new bench.Counter('loop1');
+var for1 = new bench.Stopwatch('for1');
+var block1 = new bench.Stopwatch('block1');
 var dummy = 0;
 
-c1.start();
-sw1.start();
+loop1.start();
+for1.start();
 for (var i = 0; i < 1000; ++i) {
-    c1.incr();
-    sw2.start();
+    loop1.incr();
+    block1.start();
     dummy += i * 2;
-    sw2.stop();
-    sw1.split();
+    block1.stop();
+    for1.split();
 }
-c1.stop();
-sw1.stop();
+loop1.stop();
+for1.stop();
 
-bench.timestamp('rpc1', 'replied');
+rpc1.timestamp('replied');
 
 bench.summary();
