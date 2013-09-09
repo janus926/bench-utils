@@ -61,8 +61,7 @@ utils.Counter.prototype.start = function () {
 
 utils.Counter.prototype.stop = function () {
     if (this.startTime) {
-        this.elapsed = hrtime.add(this.elapsed,
-                                  hrtime.sub(process.hrtime(), this.startTime));
+        this.elapsed = hrtime.add(this.elapsed, process.hrtime(this.startTime));
         this.startTime = null;
     }
 };
@@ -84,7 +83,7 @@ utils.Stopwatch.prototype.split = function () {
         ++this.splits;
         var now;
         this.lapsElapsed = hrtime.add(this.lapsElapsed,
-                                      hrtime.sub((now = process.hrtime()), this.lastSplit));
+                                      hrtime.sub(now = process.hrtime(), this.lastSplit));
         this.lastSplit = now;
     }
 };
@@ -97,8 +96,7 @@ utils.Stopwatch.prototype.start = function () {
 utils.Stopwatch.prototype.stop = function () {
     if (this.startTime) {
         ++this.cycles;
-        this.totalElapsed = hrtime.add(this.totalElapsed,
-                                       hrtime.sub(process.hrtime(), this.startTime));
+        this.totalElapsed = hrtime.add(this.totalElapsed, process.hrtime(this.startTime));
         this.startTime = null;
     }
 };
