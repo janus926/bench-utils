@@ -33,18 +33,18 @@ var utils = {
 
     summary: function (regexp) {
         var dump = function(classes) {
-	    for (var cls in classes) {
-		var instances = classes[cls];
-		console.log(cls + ':');
-		for (var name in instances)
-		    if (typeof regexp === 'undefined' || regexp.test(name))
-			console.log('  ' + instances[name]);
-	    }
+            for (var cls in classes) {
+                var instances = classes[cls];
+                console.log(cls + ':');
+                for (var name in instances)
+                    if (typeof regexp === 'undefined' || regexp.test(name))
+                        console.log('  ' + instances[name]);
+            }
         };
 
-	dump({ 'Counter': utils.counters,
-	       'Stopwatch': utils.stopwatches,
-	       'Timestampable': utils.timestampables });
+        dump({ 'Counter': utils.counters,
+               'Stopwatch': utils.stopwatches,
+               'Timestampable': utils.timestampables });
     }
 };
 
@@ -129,7 +129,7 @@ utils.Timestampable.prototype.toString = function () {
     var ret = this.name + ' - ' + this.event[0][0];
     for (var i = 1; i < this.event.length; ++i)
         ret += ' -> ' + this.event[i][0] + '(+' +
-	       hrtime.str(hrtime.sub(this.event[i][1], this.event[i - 1][1])) + ')';
+               hrtime.str(hrtime.sub(this.event[i][1], this.event[i - 1][1])) + ')';
     return ret;
 };
 

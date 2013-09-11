@@ -38,7 +38,7 @@ Stopwatch:
   for1 - cycles=1, total elapsed=3.156229ms (3.156229ms/cycle), splits=1000, laps elapsed=3.082689ms (0.003082ms/lap)
   block1 - cycles=1000, total elapsed=0.465914ms (0.000465ms/cycle)
 Timestampable:
-  rpc1 - received <0.015879ms> processed <3.283273ms> replied
+  rpc1 - received -> processed(+0.011471ms) -> replied(+3.475012ms)
 ```
 
 ## API
