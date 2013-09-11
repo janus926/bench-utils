@@ -45,6 +45,8 @@ Timestampable:
 ### bench.counters
 ### bench.stopwaches
 ### bench.timestampables
+Use the instances collection to ease your application from passing
+them around.
 ### bench.Counter(name)
 #### Counter.decr([value])
 #### Counter.incr([value])
