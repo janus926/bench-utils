@@ -128,8 +128,8 @@ utils.Timestampable.prototype.timestamp = function (event) {
 utils.Timestampable.prototype.toString = function () {
     var ret = this.name + ' - ' + this.event[0][0];
     for (var i = 1; i < this.event.length; ++i)
-        ret += ' <' + hrtime.str(hrtime.sub(this.event[i][1], this.event[i - 1][1])) +
-               '> ' + this.event[i][0];
+        ret += ' -> ' + this.event[i][0] + '(+' +
+	       hrtime.str(hrtime.sub(this.event[i][1], this.event[i - 1][1])) + ')';
     return ret;
 };
 
