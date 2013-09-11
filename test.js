@@ -19,9 +19,9 @@ for (var i = 0; i < 1000; ++i) {
     block1.stop();
     for1.split();
 }
-loop1.stop();
-for1.stop();
+bench.counters.loop1.stop();
+bench.stopwatches.for1.stop();
 
-rpc1.timestamp('replied');
+bench.timestampables['rpc1'].timestamp('replied');
 
 bench.summary();

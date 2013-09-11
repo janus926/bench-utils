@@ -1,17 +1,17 @@
 var hrtime = require('./lib/hrtime');
 
-var counter = [];
-var stopwatch = [];
-var timestampable = [];
-
 var utils = {
+
+    counters: {},
+    stopwatches: {},
+    timestampables: {},
 
     Counter: function (name) {
         this.name = name;
         this.value = 0;
         this.elapsed = [0, 0];
         this.startTime = null;
-        counter.push(this);
+        utils.counters[name] = this;
     },
 
     Stopwatch: function (name) {
@@ -22,40 +22,40 @@ var utils = {
         this.splits = 0;
         this.lastSplit = [0, 0];
         this.lapsElapsed = [0, 0];
-        stopwatch.push(this);
+        utils.stopwatches[name] = this;
     },
 
     Timestampable: function (name) {
         this.name = name;
         this.event = new Array();
-        timestampable.push(this);
+        utils.timestampables[name] = this;
     },
 
     summary: function () {
         console.log('Counter:');
-        for (var i = 0; i < counter.length; ++i)
-            console.log('  ' + counter[i]);
+        for (var name in utils.counters)
+            console.log('  ' + utils.counters[name]);
 
         console.log('Stopwatch:');
-        for (var i = 0; i < stopwatch.length; ++i)
-            console.log('  ' + stopwatch[i]);
+        for (var name in utils.stopwatches)
+            console.log('  ' + utils.stopwatches[name]);
 
         console.log('Timestampable:');
-        for (var i = 0; i < timestampable.length; ++i)
-            console.log('  ' + timestampable[i]);
+        for (var name in utils.timestampables)
+            console.log('  ' + utils.timestampables[name]);
     }
-};
-
-utils.Counter.prototype.incr = function (value) {
-    if (typeof value === 'undefined')
-	value = 1;
-    this.value += value;
 };
 
 utils.Counter.prototype.decr = function (value) {
     if (typeof value === 'undefined')
-	value = 1;
+        value = 1;
     this.vlaue -= value;
+};
+
+utils.Counter.prototype.incr = function (value) {
+    if (typeof value === 'undefined')
+        value = 1;
+    this.value += value;
 };
 
 utils.Counter.prototype.start = function () {
