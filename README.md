@@ -43,8 +43,8 @@ Timestampable:
 
 ## API
 ### bench.Counter(name)
-#### Counter.decr()
-#### Counter.incr()
+#### Counter.decr([value])
+#### Counter.incr([value])
 #### Counter.start()
 #### Counter.stop()
 #### Counter.toString()

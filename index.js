@@ -46,12 +46,16 @@ var utils = {
     }
 };
 
-utils.Counter.prototype.incr = function () {
-    ++this.value;
+utils.Counter.prototype.incr = function (value) {
+    if (typeof value === 'undefined')
+	value = 1;
+    this.value += value;
 };
 
-utils.Counter.prototype.decr = function () {
-    --this.value;
+utils.Counter.prototype.decr = function (value) {
+    if (typeof value === 'undefined')
+	value = 1;
+    this.vlaue -= value;
 };
 
 utils.Counter.prototype.start = function () {
