@@ -31,18 +31,20 @@ var utils = {
         utils.timestampables[name] = this;
     },
 
-    summary: function () {
-        console.log('Counter:');
-        for (var name in utils.counters)
-            console.log('  ' + utils.counters[name]);
+    summary: function (regexp) {
+        var dump = function(classes) {
+	    for (var cls in classes) {
+		var instances = classes[cls];
+		console.log(cls + ':');
+		for (var name in instances)
+		    if (typeof regexp === 'undefined' || regexp.test(name))
+			console.log('  ' + instances[name]);
+	    }
+        };
 
-        console.log('Stopwatch:');
-        for (var name in utils.stopwatches)
-            console.log('  ' + utils.stopwatches[name]);
-
-        console.log('Timestampable:');
-        for (var name in utils.timestampables)
-            console.log('  ' + utils.timestampables[name]);
+	dump({ 'Counter': utils.counters,
+	       'Stopwatch': utils.stopwatches,
+	       'Timestampable': utils.timestampables });
     }
 };
 

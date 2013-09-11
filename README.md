@@ -59,4 +59,4 @@ Timestampable:
 ### bench.Timestampable(name)
 #### Timestampable.timestamp(event)
 #### Timestampable.toString()
-### bench.summary()
+### bench.summary([regexp])
