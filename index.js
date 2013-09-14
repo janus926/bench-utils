@@ -27,7 +27,7 @@ var utils = {
 
     Timestampable: function (name) {
         this.name = name;
-        this.event = new Array();
+        this.event = [];
         utils.timestampables[name] = this;
     },
 
@@ -60,6 +60,12 @@ utils.Counter.prototype.incr = function (value) {
     this.value += value;
 };
 
+utils.Counter.prototype.reset = function () {
+    this.value = 0;
+    this.elapsed = [0, 0];
+    this.startTime = null;
+};
+
 utils.Counter.prototype.start = function () {
     if (!this.startTime)
         this.startTime = process.hrtime();
@@ -82,6 +88,15 @@ utils.Counter.prototype.toString = function () {
            (this.value / (this.elapsed[0] + (this.elapsed[1] / 1e9))).toFixed(6) +
            'times/sec)';
     return ret;
+};
+
+utils.Stopwatch.prototype.reset = function () {
+    this.cycles = 0;
+    this.startTime = null;
+    this.totalElapsed = [0, 0];
+    this.splits = 0;
+    this.lastSplit = [0, 0];
+    this.lapsElapsed = [0, 0];
 };
 
 utils.Stopwatch.prototype.split = function () {
@@ -119,6 +134,10 @@ utils.Stopwatch.prototype.toString = function () {
                ', laps elapsed=' + hrtime.str(this.lapsElapsed) +
                ' (' + hrtime.str(hrtime.div(this.lapsElapsed, this.splits)) + '/lap)';
     return ret;
+};
+
+utils.Timestampable.prototype.reset = function () {
+    this.event = [];
 };
 
 utils.Timestampable.prototype.timestamp = function (event) {
