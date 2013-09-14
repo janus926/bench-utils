@@ -1,4 +1,5 @@
 var hrtime = require('./lib/hrtime');
+var sprintf = require('sprintf').sprintf;
 
 var utils = {
 
@@ -31,20 +32,60 @@ var utils = {
         utils.timestampables[name] = this;
     },
 
-    summary: function (regexp) {
-        var dump = function(classes) {
-            for (var cls in classes) {
-                var instances = classes[cls];
-                console.log(cls + ':');
-                for (var name in instances)
-                    if (typeof regexp === 'undefined' || regexp.test(name))
-                        console.log('  ' + instances[name]);
-            }
-        };
 
-        dump({ 'Counter': utils.counters,
-               'Stopwatch': utils.stopwatches,
-               'Timestampable': utils.timestampables });
+    summary: function (regexp) {
+	var reIsDefined = (typeof regexp !== 'undefined');
+	var counters = utils.counters;
+	var stopwatches = utils.stopwatches;
+	var timestampables = utils.timestampables;
+
+	console.log('- COUNTER -');
+	console.log(sprintf('%-7s%7s %-15s%-15s',
+			    'NAME', 'VALUE', 'ELAPSED', 'TIMES/SEC'));
+	for (var name in counters) {
+            if (reIsDefined && !regexp.test(name))
+		continue;
+	    var c = counters[name];
+	    var elapsed = c.startTime ? process.hrtime(c.startTime) : c.elapsed;
+	    console.log(sprintf('%-7s%7s %-15s%-15s',
+				name, c.value,
+				hrtime.str(elapsed),
+				(c.value / (elapsed[0] + (elapsed[1] / 1e9))).toFixed(6)));
+	}
+
+	console.log('- STOPWATCH -');
+	console.log(sprintf('%-7s%7s %-15s%-15s%6s %-15s%-13s',
+			    'NAME', 'CYCLES', 'ELAPSED', 'CYCLE TIME',
+			    'SPLITS', 'ELAPSED', 'SPLIT TIME'));
+	for (var name in stopwatches) {
+            if (reIsDefined && !regexp.test(name))
+		continue;
+	    var sw = stopwatches[name];
+	    var totalElapsed = sw.startTime ? process.hrtime(sw.startTime) : sw.totalElapsed;
+	    console.log(sprintf('%-7s%7s %-15s%-15s%6s %-15s%-13s',
+				name, sw.cycles, hrtime.str(totalElapsed),
+				hrtime.str(hrtime.div(totalElapsed, sw.cycles)),
+				sw.splits, hrtime.str(sw.lapsElapsed),
+				hrtime.str(hrtime.div(sw.lapsElapsed, sw.splits))));
+	}
+
+	console.log('- TIMESTAMPABLE -');
+	console.log(sprintf('%-8s%-12s %-15s%-15s',
+			    'NAME', 'EVENT', 'DIFF', 'CUMULATIVE'));
+	for (var name in timestampables) {
+            if (reIsDefined && !regexp.test(name))
+		continue;
+	    var ts = timestampables[name];
+	    var cumulative = [0, 0];
+	    console.log(sprintf('%-8s%-12s %-15s%-15s', name, ts.event[0][0], '-', '0ms'));
+	    for (var i = 1; i < ts.event.length; ++i) {
+		var diff = hrtime.sub(ts.event[i][1], ts.event[i - 1][1]);
+		cumulative = hrtime.add(cumulative, diff);
+		console.log(sprintf('%-8s%-12s %-15s%-15s',
+				    '', ts.event[i][0], 
+				    hrtime.str(diff), hrtime.str(cumulative)));
+	    }
+	}
     }
 };
 
@@ -76,18 +117,6 @@ utils.Counter.prototype.stop = function () {
         this.elapsed = hrtime.add(this.elapsed, process.hrtime(this.startTime));
         this.startTime = null;
     }
-};
-
-utils.Counter.prototype.toString = function () {
-    var ret = this.name + ' - ';
-    if (this.startTime)
-        return ret + 'running';
-    ret += 'value=' + this.value +
-           ', elapsed=' + hrtime.str(this.elapsed) +
-           ' (' +
-           (this.value / (this.elapsed[0] + (this.elapsed[1] / 1e9))).toFixed(6) +
-           'times/sec)';
-    return ret;
 };
 
 utils.Stopwatch.prototype.reset = function () {
@@ -122,34 +151,12 @@ utils.Stopwatch.prototype.stop = function () {
     }
 };
 
-utils.Stopwatch.prototype.toString = function () {
-    var ret = this.name + ' - ';
-    if (this.startTime)
-        return ret + 'running';
-    ret += 'cycles=' + this.cycles +
-           ', total elapsed=' + hrtime.str(this.totalElapsed) +
-           ' (' + hrtime.str(hrtime.div(this.totalElapsed, this.cycles)) + '/cycle)';
-    if (this.splits)
-        ret += ', splits=' + this.splits +
-               ', laps elapsed=' + hrtime.str(this.lapsElapsed) +
-               ' (' + hrtime.str(hrtime.div(this.lapsElapsed, this.splits)) + '/lap)';
-    return ret;
-};
-
 utils.Timestampable.prototype.reset = function () {
     this.event = [];
 };
 
 utils.Timestampable.prototype.timestamp = function (event) {
     this.event.push([event, process.hrtime()]);
-};
-
-utils.Timestampable.prototype.toString = function () {
-    var ret = this.name + ' - ' + this.event[0][0];
-    for (var i = 1; i < this.event.length; ++i)
-        ret += ' -> ' + this.event[i][0] + ' (+' +
-               hrtime.str(hrtime.sub(this.event[i][1], this.event[i - 1][1])) + ')';
-    return ret;
 };
 
 module.exports = utils;

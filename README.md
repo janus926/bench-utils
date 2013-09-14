@@ -32,13 +32,18 @@ bench.summary();
 ```
 which will get output:
 ```
-Counter:
-  loop1 - value=1000, elapsed=3.142625ms (318205.321984times/sec)
-Stopwatch:
-  for1 - cycles=1, total elapsed=3.156229ms (3.156229ms/cycle), splits=1000, laps elapsed=3.082689ms (0.003082ms/lap)
-  block1 - cycles=1000, total elapsed=0.465914ms (0.000465ms/cycle)
-Timestampable:
-  rpc1 - received -> processed (+0.011471ms) -> replied (+3.475012ms)
+- COUNTER -
+NAME     VALUE ELAPSED        TIMES/SEC      
+loop1     1000 3.326262ms     300637.772972  
+- STOPWATCH -
+NAME    CYCLES ELAPSED        CYCLE TIME     SPLITS ELAPSED        SPLIT TIME   
+for1         1 3.334602ms     3.334602ms       1000 3.268793ms     0.003268ms   
+block1    1000 0.476952ms     0.000476ms          0 0ms            NaNms        
+- TIMESTAMPABLE -
+NAME    EVENT        DIFF           CUMULATIVE     
+rpc1    received     -              0ms            
+        processed    0.014056ms     0.014056ms     
+        replied      3.455259ms     3.469315ms     
 ```
 
 ## API
@@ -52,13 +57,9 @@ Use the instances collection to ease your application from passing them around.
 #### counter.incr([value])
 #### counter.start()
 #### counter.stop()
-#### counter.toString()
 ### Stopwatch(name)
 #### stopwatch.split()
 #### stopwatch.start()
 #### stopwatch.stop()
-#### stopwatch.toString()
 ### Timestampable(name)
 #### timestampable.timestamp(event)
-#### timestampable.toString()
-
