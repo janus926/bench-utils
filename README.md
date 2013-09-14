@@ -46,20 +46,20 @@ Timestampable:
 ### bench.stopwaches
 ### bench.timestampables
 Use the instances collection to ease your application from passing
-them around.
 ### bench.summary([regexp])
-### class Counter
+them around.
+### Counter(name)
 #### counter.decr([value])
 #### counter.incr([value])
 #### counter.start()
 #### counter.stop()
 #### counter.toString()
-### class Stopwatch
+### Stopwatch(name)
 #### stopwatch.split()
 #### stopwatch.start()
 #### stopwatch.stop()
 #### stopwatch.toString()
-### class Timestampable
+### Timestampable(name)
 #### timestampable.timestamp(event)
 #### timestampable.toString()
 
