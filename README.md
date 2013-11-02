@@ -1,65 +1,65 @@
 # bench-utils
 
-## Usage
+# Usage
 ```
-var bench = require('./bench-utils');
-
-var rpc1 = new bench.Timestampable('rpc1');
-
-rpc1.timestamp('received');
-rpc1.timestamp('processed');
-
-var loop1 = new bench.Counter('loop1');
-var for1 = new bench.Stopwatch('for1');
-var block1 = new bench.Stopwatch('block1');
-var dummy = 0;
-
-loop1.start();
-for1.start();
-for (var i = 0; i < 1000; ++i) {
-    loop1.incr();
-    block1.start();
-    dummy += i * 2;
-    block1.stop();
-    for1.split();
+// Counter
+var counter = new bench.Counter('forLoopCounter');
+counter.start();
+for (var i = 0; i < 100; ++i) {
+  counter.incr();
 }
-bench.counters.loop1.stop();
-bench.stopwatches['for1'].stop();
+counter.stop();
+console.log(counter.toString());
 
-bench.timestampables['rpc1'].timestamp('replied');
+// Stopwatch
+var stopwatch = new bench.Stopwatch('forLoopDuration');
+stopwatch.start();
+for (var i = 0; i < 100; ++i)
+  ;
+stopwatch.stop();
+console.log(stopwatch.toString());
 
-bench.summary();
-```
-which will get output:
-```
-- COUNTER -
-NAME     VALUE ELAPSED        TIMES/SEC      
-loop1     1000 3.326262ms     300637.772972  
-- STOPWATCH -
-NAME    CYCLES ELAPSED        CYCLE TIME     SPLITS ELAPSED        SPLIT TIME   
-for1         1 3.334602ms     3.334602ms       1000 3.268793ms     0.003268ms   
-block1    1000 0.476952ms     0.000476ms          0 0ms            NaNms        
-- TIMESTAMPABLE -
-NAME    EVENT        DIFF           CUMULATIVE     
-rpc1    received     -              0ms            
-        processed    0.014056ms     0.014056ms     
-        replied      3.455259ms     3.469315ms     
+// Timestampable
+var rpc = new bench.Timestampable('rpc');
+rpc.timestamp('received');
+rpc.timestamp('processed');
+rpc.timestamp('replied');
+console.log(rpc.toString());
 ```
 
-## API
-### bench.counters
-### bench.stopwaches
-### bench.timestampables
-Use the instances collection to ease your application from passing them around.
-### bench.summary([regexp])
-### Counter(name)
-#### counter.decr([value])
-#### counter.incr([value])
-#### counter.start()
-#### counter.stop()
-### Stopwatch(name)
-#### stopwatch.split()
-#### stopwatch.start()
-#### stopwatch.stop()
-### Timestampable(name)
-#### timestampable.timestamp(event)
+# API
+## bench.counters
+## bench.stopwatches
+## bench.timestampables
+Use the instances collection to ease your application from passing
+them around.
+```
+bench.counters.forLoopCounter.incr();
+bench.counters['forLoopCounter'].incr();
+```
+## Counter(name)
+### counter.decr([value])
+### counter.incr([value])
+Default value is 1.
+### counter.start()
+### counter.stop()
+Use start/stop in case you also want to know how long the counter is
+couting.
+### counter.reset()
+### counter.toString()
+## Stopwatch(name)
+### stopwatch.start()
+### stopwatch.stop()
+It is cumulative elapsed time from each start/stop cycle.
+### stopwatch.reset()
+### stopwatch.toString()
+## Timestampable(name)
+### timestampable.timestamp(event)
+### timestampable.reset()
+### timestampable.toString()
+The output will be like:
+```
+[timestampable rpc received=0ms processed=0.010993ms replied=0.013843ms]
+```
+Which the first event will always be 0ms, following events will have
+time difference from the first event.
