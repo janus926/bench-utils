@@ -50,7 +50,7 @@ couting.
 ## Stopwatch(name)
 ### stopwatch.start()
 ### stopwatch.stop()
-It is cumulative elapsed time from each start/stop cycle.
+The stopwatch has cumulative elapsed time from each start/stop cycle.
 ### stopwatch.reset()
 ### stopwatch.toString()
 ## Timestampable(name)
