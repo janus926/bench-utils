@@ -1,7 +1,7 @@
 # bench-utils
 
 # Usage
-```
+````javascript
 // Counter
 var counter = new bench.Counter('forLoopCounter');
 counter.start();
@@ -33,7 +33,7 @@ console.log(rpc.toString());
 ## bench.timestampables
 Use the instances collection to ease your application from passing
 them around.
-```
+````javascript
 bench.counters.forLoopCounter.incr();
 bench.counters['forLoopCounter'].incr();
 ```
