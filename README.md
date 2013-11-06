@@ -17,7 +17,7 @@ stopwatch.start();
 for (var i = 0; i < 100; ++i)
   ;
 stopwatch.stop();
-console.log(stopwatch.toString()); // stopwatch forLoopDuration cycles=1 elapsed=0.030586ms]
+console.log(stopwatch.toString()); // [stopwatch forLoopDuration cycles=1 elapsed=0.030586ms]
 
 // Timestampable
 var rpc = new bench.Timestampable('rpc');
