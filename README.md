@@ -57,4 +57,4 @@ The stopwatch has cumulative elapsed time from each start/stop cycle.
 ### timestampable.timestamp(event)
 ### timestampable.reset()
 ### timestampable.toString()
-The output list time differences between each event and the first one.
+The output list time differences from each event to the first one.
