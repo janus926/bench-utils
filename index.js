@@ -59,9 +59,14 @@ bench.Counter.prototype.stop = function() {
 };
 
 bench.Counter.prototype.toString = function() {
+  var elapsed = this.elapsed;
+
+  if (typeof this.startTime !== 'undefined')
+    elapsed = hrtime.add(elapsed, process.hrtime(this.startTime));
+
   return "[counter " + this.name
          + " value=" + this.value
-         + (typeof this.elapsed !== 'undefined' ? " elapsed=" + hrtime.str(this.elapsed) : "")
+         + (typeof elapsed !== 'undefined' ? " elapsed=" + hrtime.str(elapsed) : "")
          + "]";
 }
 
@@ -85,9 +90,14 @@ bench.Stopwatch.prototype.stop = function() {
 };
 
 bench.Stopwatch.prototype.toString = function() {
+  var elapsed = this.elapsed;
+
+  if (typeof this.startTime !== 'undefined')
+    elapsed = hrtime.add(elapsed, process.hrtime(this.startTime));
+
   return "[stopwatch " + this.name
          + " cycles=" + this.cycles
-         + (typeof this.elapsed !== 'undefined' ? " elapsed=" + hrtime.str(this.elapsed) : "")
+         + (typeof elapsed !== 'undefined' ? " elapsed=" + hrtime.str(elapsed) : "")
          + "]";
 }
 

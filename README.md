@@ -9,7 +9,7 @@ for (var i = 0; i < 100; ++i) {
   counter.incr();
 }
 counter.stop();
-console.log(counter.toString());
+console.log(counter.toString()); // [counter forLoopCounter value=100 elapsed=0.049861ms]
 
 // Stopwatch
 var stopwatch = new bench.Stopwatch('forLoopDuration');
@@ -17,14 +17,14 @@ stopwatch.start();
 for (var i = 0; i < 100; ++i)
   ;
 stopwatch.stop();
-console.log(stopwatch.toString());
+console.log(stopwatch.toString()); // stopwatch forLoopDuration cycles=1 elapsed=0.030586ms]
 
 // Timestampable
 var rpc = new bench.Timestampable('rpc');
 rpc.timestamp('received');
 rpc.timestamp('processed');
 rpc.timestamp('replied');
-console.log(rpc.toString());
+console.log(rpc.toString()); // [timestampable rpc received=0ms processed=0.010993ms replied=0.013843ms]
 ```
 
 # API
@@ -43,8 +43,8 @@ bench.counters['forLoopCounter'].incr();
 Default value is 1.
 ### counter.start()
 ### counter.stop()
-Use start/stop in case you also want to know how long the counter is
-couting.
+Use start/stop in case you want to record how long the counter is
+couting. decr/incr still works even start is not called.
 ### counter.reset()
 ### counter.toString()
 ## Stopwatch(name)
@@ -57,9 +57,4 @@ The stopwatch has cumulative elapsed time from each start/stop cycle.
 ### timestampable.timestamp(event)
 ### timestampable.reset()
 ### timestampable.toString()
-The output will be like:
-```
-[timestampable rpc received=0ms processed=0.010993ms replied=0.013843ms]
-```
-Which the first event will always be 0ms, following events will have
-time difference from the first event.
+The output list time differences between each event and the first one.

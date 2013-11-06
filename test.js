@@ -6,7 +6,7 @@ counter.start();
 for (var i = 0; i < 100; ++i) {
   counter.incr();
 }
-counter.stop();
+//counter.stop();
 console.log(counter.toString());
 
 // Stopwatch
