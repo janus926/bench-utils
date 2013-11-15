@@ -2,7 +2,7 @@
 
 # Usage
 ```javascript
-var bench = require('./index');
+var bench = require('bench-utils');
 
 // Counter
 var counter = new bench.Counter('loopCounter');
