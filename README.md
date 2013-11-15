@@ -41,8 +41,8 @@ Output:
 Use the instances collection to ease your application from passing
 them around.
 ```javascript
-bench.counters.forLoopCounter.incr();
-bench.counters['forLoopCounter'].incr();
+bench.counters.loopCounter.incr();
+bench.counters['loopCounter'].incr();
 ```
 ## bench.print([regexp])
 Output the matched instances `toString` to console.
