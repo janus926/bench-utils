@@ -1,25 +1,24 @@
 var bench = require('./index');
 
 // Counter
-var counter = new bench.Counter('forLoopCounter');
+var counter = new bench.Counter('loopCounter');
 counter.start();
 for (var i = 0; i < 100; ++i) {
   counter.incr();
 }
-//counter.stop();
-console.log(counter.toString());
+counter.stop();
 
 // Stopwatch
-var stopwatch = new bench.Stopwatch('forLoopDuration');
+var stopwatch = new bench.Stopwatch('loopDuration');
 stopwatch.start();
 for (var i = 0; i < 100; ++i)
   ;
 stopwatch.stop();
-console.log(stopwatch.toString());
 
 // Timestampable
-var rpc = new bench.Timestampable('rpc');
-rpc.timestamp('received');
-rpc.timestamp('processed');
-rpc.timestamp('replied');
-console.log(rpc.toString());
+var timestampable = new bench.Timestampable('rpcN');
+timestampable.timestamp('received');
+timestampable.timestamp('processed');
+timestampable.timestamp('replied');
+
+bench.print();

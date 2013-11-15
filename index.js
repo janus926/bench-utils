@@ -25,17 +25,27 @@ var bench = {
     this.name = name;
     this.events = [];
     bench.timestampables[name] = this;
+  },
+
+  print: function(regexp) {
+    [bench.counters, bench.stopwatches, bench.timestampables].map(function(c) {
+      for (var name in c) {
+        if (regexp !== undefined && !regexp.test(name))
+          continue;
+        console.log(c[name].toString());
+      }
+    });
   }
 };
 
 bench.Counter.prototype.decr = function(value) {
-  if (typeof value === 'undefined')
+  if (value === undefined)
     value = 1;
   this.vlaue -= value;
 };
 
 bench.Counter.prototype.incr = function(value) {
-  if (typeof value === 'undefined')
+  if (value === undefined)
      value = 1;
   this.value += value;
 };
@@ -61,12 +71,12 @@ bench.Counter.prototype.stop = function() {
 bench.Counter.prototype.toString = function() {
   var elapsed = this.elapsed;
 
-  if (typeof this.startTime !== 'undefined')
+  if (this.startTime !== undefined)
     elapsed = hrtime.add(elapsed, process.hrtime(this.startTime));
 
-  return "[counter " + this.name
+  return "[C " + this.name
          + " value=" + this.value
-         + (typeof elapsed !== 'undefined' ? " elapsed=" + hrtime.str(elapsed) : "")
+         + (elapsed !== undefined ? " elapsed=" + hrtime.str(elapsed) : "")
          + "]";
 }
 
@@ -92,12 +102,12 @@ bench.Stopwatch.prototype.stop = function() {
 bench.Stopwatch.prototype.toString = function() {
   var elapsed = this.elapsed;
 
-  if (typeof this.startTime !== 'undefined')
+  if (this.startTime !== undefined)
     elapsed = hrtime.add(elapsed, process.hrtime(this.startTime));
 
-  return "[stopwatch " + this.name
+  return "[S " + this.name
          + " cycles=" + this.cycles
-         + (typeof elapsed !== 'undefined' ? " elapsed=" + hrtime.str(elapsed) : "")
+         + (elapsed !== undefined ? " elapsed=" + hrtime.str(elapsed) : "")
          + "]";
 }
 
@@ -110,7 +120,7 @@ bench.Timestampable.prototype.timestamp = function(event) {
 };
 
 bench.Timestampable.prototype.toString = function() {
-  var str = "[timestampable " + this.name + " " + this.events[0][0] + "=0ms";
+  var str = "[T " + this.name + " " + this.events[0][0] + "=0ms";
   for (var i = 1; i < this.events.length; ++i) {
     str += " " + this.events[i][0] + "=" + hrtime.str(hrtime.sub(this.events[i][1], this.events[0][1]));
   }
